@@ -1,0 +1,34 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+compileJava.options.encoding = 'utf-8'
+
+eclipse {
+  jdt {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    file {
+      File dir = file('.settings')
+      dir.mkdirs()
+      
+      File f = file('.settings/org.eclipse.core.resources.prefs')
+	  f.write('eclipse.preferences.version=1\n')
+	  f.append('encoding/<project>=utf-8')
+    }
+  }
+}
+
+
+cleanEclipse.doLast {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.delete()
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12', 'org.hamcrest:hamcrest-all:1.3'
+}

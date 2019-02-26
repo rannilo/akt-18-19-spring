@@ -4,7 +4,6 @@ import dk.brics.automaton.Automaton;
 import dk.brics.automaton.State;
 import dk.brics.automaton.StatePair;
 import dk.brics.automaton.Transition;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -111,7 +110,7 @@ public class JFlapEquivalenceTester {
 		return children.item(0).getTextContent();
 	}
 
-	@Test @Ignore
+	@Test
 	public void test() {
 		Automaton benchAutomaton = fromJFlap(this.benchmarkFile);
         String fileName = benchmarkFile.getName().replace("bench", "yl");

@@ -43,7 +43,7 @@ public class RegexChallengeTests {
     }
 
     public static void check(String s, Automaton a) {
-        Automaton q = (new RegExp(s)).toAutomaton();
+        Automaton q = (new RegExp(s, RegExp.NONE)).toAutomaton();
         String s1 = BasicOperations.minus(a, q).getShortestExample(true);
         if (s1 != null) fail("Sinu regex ei tunne ära sõna \"" + eps(s1) + "\".");
         String s2 = BasicOperations.minus(q, a).getShortestExample(true);

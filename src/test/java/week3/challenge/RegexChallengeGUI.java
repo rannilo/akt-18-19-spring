@@ -95,7 +95,7 @@ public class RegexChallengeGUI implements ItemListener {
 
     public static String check(Automaton a, String s) {
         try {
-            Automaton q = (new RegExp(s)).toAutomaton();
+            Automaton q = (new RegExp(s, RegExp.NONE)).toAutomaton();
             String s1 = BasicOperations.minus(a, q).getShortestExample(true);
             if (s1 != null) return ("Sinu regex ei tunne ära sõna \"" + eps(s1) + "\".");
             else {

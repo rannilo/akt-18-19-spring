@@ -21,6 +21,12 @@ public class FunctionCall extends Expression {
 	private final String functionName;
 	private final List<Expression> arguments;
 
+	/**
+	 * Sidumine väljakutsutava AKTK funktsiooni definitsiooniga.
+	 * Operaatorite ja builtin funktsioonide korral {@code null}.
+	 */
+	private FunctionDefinition functionBinding = null;
+
 	public FunctionCall(String functionName, List<Expression> arguments) {
 		this.functionName = functionName;
 		this.arguments = arguments;
@@ -36,6 +42,14 @@ public class FunctionCall extends Expression {
 
 	public List<Expression> getArguments() {
 		return Collections.unmodifiableList(arguments);
+	}
+
+	public FunctionDefinition getFunctionBinding() {
+		return functionBinding;
+	}
+
+	public void setFunctionBinding(FunctionDefinition functionBinding) {
+		this.functionBinding = functionBinding;
 	}
 
 	@Override

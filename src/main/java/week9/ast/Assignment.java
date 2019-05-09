@@ -11,6 +11,11 @@ public class Assignment extends Statement {
 	private final String variableName;
 	private final Expression expression;
 
+	/**
+	 * Sidumine omistatava muutujaga.
+	 */
+	private VariableBinding binding = null;
+
 	public Assignment(String variableName, Expression expression) {
 		this.variableName = variableName;
 		this.expression = expression;
@@ -22,6 +27,14 @@ public class Assignment extends Statement {
 
 	public Expression getExpression() {
 		return expression;
+	}
+
+	public VariableBinding getBinding() {
+		return binding;
+	}
+
+	public void setBinding(VariableBinding binding) {
+		this.binding = binding;
 	}
 
 	@Override

@@ -9,6 +9,11 @@ import java.util.List;
 public class ReturnStatement extends Statement {
 
 	private final Expression expression;
+
+	/**
+	 * Sidumine AKTK funktsiooni definitsiooniga, millest tagastatakse.
+	 */
+	private FunctionDefinition functionBinding = null;
 	
 	public ReturnStatement(Expression expression) {
 		this.expression = expression;
@@ -16,6 +21,14 @@ public class ReturnStatement extends Statement {
 	
 	public Expression getExpression() {
 		return expression;
+	}
+	
+	public FunctionDefinition getFunctionBinding() {
+		return functionBinding;
+	}
+
+	public void setFunctionBinding(FunctionDefinition functionBinding) {
+		this.functionBinding = functionBinding;
 	}
 
 	@Override

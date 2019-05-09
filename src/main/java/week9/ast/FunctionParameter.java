@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @see FunctionDefinition
  */
-public class FunctionParameter extends AstNode {
+public class FunctionParameter extends AstNode implements VariableBinding {
 
 	private final String parameterName;
 	private final String type;
@@ -17,11 +17,13 @@ public class FunctionParameter extends AstNode {
 		this.parameterName = parameterName;
         this.type = type;
     }
-
+	
+	@Override
 	public String getVariableName() {
 		return parameterName;
 	}
 
+    @Override
     public String getType() {
         return type;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Muutuja deklaratsioon.
  */
-public class VariableDeclaration extends Statement {
+public class VariableDeclaration extends Statement implements VariableBinding {
 
 	private final String variableName;
 	/**
@@ -28,10 +28,12 @@ public class VariableDeclaration extends Statement {
 		this(variableName, null, initializer);
 	}
 
+	@Override
 	public String getVariableName() {
 		return variableName;
 	}
 
+	@Override
 	public String getType() {
 		return type;
 	}

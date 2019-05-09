@@ -12,12 +12,25 @@ public class Variable extends Expression {
 	
 	private final String name;
 
+	/**
+	 * Sidumine viidatava muutujaga.
+	 */
+	private VariableBinding binding = null;
+
 	public Variable(String name) {
 		this.name = name;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public VariableBinding getBinding() {
+		return binding;
+	}
+
+	public void setBinding(VariableBinding binding) {
+		this.binding = binding;
 	}
 
 	@Override

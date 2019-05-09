@@ -24,4 +24,9 @@ public class Variable extends Expression {
 	public List<Object> getChildren() {
 		return Arrays.asList(name);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

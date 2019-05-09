@@ -50,6 +50,8 @@ public abstract class AstNode {
 		return getClass().getSimpleName();
 	}
 
+	public abstract <R> R accept(AstVisitor<R> visitor);
+
 	/*
     protected void dotAddAttributes(StringBuilder out) {
         return;

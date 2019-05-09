@@ -28,4 +28,9 @@ public class WhileStatement extends Statement {
 	public List<Object> getChildren() {
 		return Arrays.asList(condition, body);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

@@ -25,4 +25,9 @@ public class Block extends Statement {
 	public List<Object> getChildren() {
 		return new ArrayList<>(statements);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

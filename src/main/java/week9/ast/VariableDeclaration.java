@@ -48,4 +48,9 @@ public class VariableDeclaration extends Statement {
     public List<Object> getChildren() {
         return Arrays.asList(variableName, type, initializer);
     }
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

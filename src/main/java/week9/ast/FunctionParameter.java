@@ -30,4 +30,9 @@ public class FunctionParameter extends AstNode {
 	public List<Object> getChildren() {
 		return Arrays.asList(parameterName, type);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

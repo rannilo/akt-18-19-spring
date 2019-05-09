@@ -34,4 +34,9 @@ public class IfStatement extends Statement {
 	public List<Object> getChildren() {
 		return Arrays.asList(condition, thenBranch, elseBranch);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

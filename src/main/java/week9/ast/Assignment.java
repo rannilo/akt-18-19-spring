@@ -28,4 +28,9 @@ public class Assignment extends Statement {
 	public List<Object> getChildren() {
 		return Arrays.asList(variableName, expression);
 	}
+
+	@Override
+	public <R> R accept(AstVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
 }

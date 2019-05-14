@@ -35,6 +35,6 @@ public class FunctionParameter extends AstNode implements VariableBinding {
 
 	@Override
 	public <R> R accept(AstVisitor<R> visitor) {
-		return visitor.visit(this);
+		throw new UnsupportedOperationException("AstVisitor ei võimalda FunctionParameter-it käsitleda: ära kutsu FunctionParameter-i peal visit, vaid kasuta seda otse");
 	}
 }

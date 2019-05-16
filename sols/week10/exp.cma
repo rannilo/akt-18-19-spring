@@ -1,0 +1,41 @@
+LOADC 11 /* n */
+LOADC 3 /* x */
+LOADC 0 /* z */
+
+                LOADC 1
+                STOREA 2
+                POP        // z=1;
+
+_while:         LOADA 0  
+                LOADC 0
+                GR         //n > 0
+                JUMPZ _end
+
+                LOADA 0
+                LOADC 1
+                AND        //n & 1
+                JUMPZ _even
+
+                LOADA 2
+                LOADA 1
+                MUL        
+                STOREA 2
+                POP        //z *= x
+
+_even:          LOADA 1
+                DUP
+                MUL
+                STOREA 1
+                POP       // x *= x;
+
+
+                LOADA 0
+                LOADC 2
+                DIV
+                STOREA 0
+                POP       //n /= 2;
+
+                JUMP _while
+
+_end:           HALT
+

@@ -1,6 +1,7 @@
 package week9.pohiosa.loogika.loogikaAst.operaatorid;
 
 import week9.pohiosa.loogika.loogikaAst.LoogikaNode;
+import week9.pohiosa.loogika.loogikaAst.LoogikaVisitor;
 
 public class VordusNode extends BinOpNode {
 
@@ -19,5 +20,10 @@ public class VordusNode extends BinOpNode {
     @Override
     public String getOpName() {
         return "=";
+    }
+
+    @Override
+    public <T> T accept(LoogikaVisitor<T> visitor) {
+        return visitor.visit(this);
     }
 }

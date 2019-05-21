@@ -1,6 +1,7 @@
 package week9.pohiosa.loogika.loogikaAst.aatomid;
 
 import week9.pohiosa.loogika.loogikaAst.LoogikaNode;
+import week9.pohiosa.loogika.loogikaAst.LoogikaVisitor;
 
 public class LoogikaLiteral extends LoogikaNode {
     private boolean value;
@@ -24,5 +25,8 @@ public class LoogikaLiteral extends LoogikaNode {
         return value ? "1" : "0";
     }
 
-
+    @Override
+    public <T> T accept(LoogikaVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

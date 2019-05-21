@@ -27,4 +27,9 @@ public class HulkTingimus extends HulkNode {
     public String toString() {
         return getAlamHulk().toString() + " subset " + getYlemHulk().toString();
     }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

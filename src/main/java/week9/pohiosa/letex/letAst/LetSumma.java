@@ -61,4 +61,9 @@ public class LetSumma extends LetAvaldis {
 
         return Objects.hash(muutujaNimi, lo, hi, keha);
     }
+
+    @Override
+    public <T> T accept(LetVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

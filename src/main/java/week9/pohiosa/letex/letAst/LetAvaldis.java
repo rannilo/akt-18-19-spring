@@ -26,5 +26,5 @@ public abstract class LetAvaldis {
         return new LetSumma(muutujaNimi, lo, hi, keha);
     }
 
-
+    public abstract <T> T accept(LetVisitor<T> visitor);
 }

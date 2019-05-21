@@ -35,4 +35,9 @@ public class KuiSiisMuidu extends LoogikaNode {
     protected Object getNodeInfo() {
         return "KUI";
     }
+
+    @Override
+    public <T> T accept(LoogikaVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

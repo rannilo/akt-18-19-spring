@@ -1,6 +1,7 @@
 package week9.pohiosa.loogika.loogikaAst.aatomid;
 
 import week9.pohiosa.loogika.loogikaAst.LoogikaNode;
+import week9.pohiosa.loogika.loogikaAst.LoogikaVisitor;
 
 public class LoogikaMuutuja extends LoogikaNode {
     private String nimi;
@@ -23,4 +24,8 @@ public class LoogikaMuutuja extends LoogikaNode {
         return nimi;
     }
 
+    @Override
+    public <T> T accept(LoogikaVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

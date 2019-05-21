@@ -34,4 +34,9 @@ public class LetArv extends LetAvaldis {
 
         return Objects.hash(arv);
     }
+
+    @Override
+    public <T> T accept(LetVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

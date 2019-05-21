@@ -42,4 +42,9 @@ public class LetVahe extends LetAvaldis {
 
         return Objects.hash(vasak, parem);
     }
+
+    @Override
+    public <T> T accept(LetVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

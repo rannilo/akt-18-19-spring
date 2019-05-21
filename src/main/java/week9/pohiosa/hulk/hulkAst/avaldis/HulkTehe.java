@@ -1,5 +1,7 @@
 package week9.pohiosa.hulk.hulkAst.avaldis;
 
+import week9.pohiosa.hulk.hulkAst.HulkVisitor;
+
 // Esindab tehet kahe hulga vahel. Lubatud on:
 // '+'  ühend
 // '&'  ühisosa
@@ -34,5 +36,10 @@ public class HulkTehe extends HulkAvaldis {
     @Override
     public String toString() {
         return "(" + getVasak().toString() + op.toString() + getParem().toString() + ")";
+    }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
     }
 }

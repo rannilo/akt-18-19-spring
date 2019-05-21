@@ -1,5 +1,7 @@
 package week9.pohiosa.hulk.hulkAst.avaldis;
 
+import week9.pohiosa.hulk.hulkAst.HulkVisitor;
+
 // Esindab hulga nime. Kokkuleppeliselt ladina suurtähed.
 public class HulkMuutuja extends HulkAvaldis {
     private Character nimi;
@@ -20,5 +22,10 @@ public class HulkMuutuja extends HulkAvaldis {
     @Override
     public String toString() {
         return nimi.toString();
+    }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
     }
 }

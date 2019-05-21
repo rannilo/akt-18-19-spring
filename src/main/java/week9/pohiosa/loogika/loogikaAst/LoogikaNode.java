@@ -68,4 +68,5 @@ public abstract class LoogikaNode {
         return Objects.hash(getNodeInfo(), getChildren());
     }
 
+    public abstract <T> T accept(LoogikaVisitor<T> visitor);
 }

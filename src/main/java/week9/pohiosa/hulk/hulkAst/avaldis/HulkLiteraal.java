@@ -1,5 +1,7 @@
 package week9.pohiosa.hulk.hulkAst.avaldis;
 
+import week9.pohiosa.hulk.hulkAst.HulkVisitor;
+
 import java.util.Set;
 
 // Esindab elementide hulka.
@@ -23,5 +25,10 @@ public class HulkLiteraal extends HulkAvaldis {
     @Override
     public String toString() {
         return elemendid.toString().replace('[', '{').replace(']', '}');
+    }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
     }
 }

@@ -38,4 +38,9 @@ public class HulkLause extends HulkNode {
             result += " | " + getTingimus().toString();
         return result;
     }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

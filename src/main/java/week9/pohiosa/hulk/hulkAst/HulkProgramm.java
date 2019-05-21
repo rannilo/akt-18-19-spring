@@ -44,4 +44,9 @@ public class HulkProgramm extends HulkNode {
     public String toString() {
         return laused.stream().map(HulkLause::toString).collect(Collectors.joining("\n"));
     }
+
+    @Override
+    public <T> T accept(HulkVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

@@ -51,4 +51,9 @@ public class LetSidumine extends LetAvaldis {
 
         return Objects.hash(muutujaNimi, muutujaSisu, keha);
     }
+
+    @Override
+    public <T> T accept(LetVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

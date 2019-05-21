@@ -70,4 +70,5 @@ public abstract class HulkNode {
         return Objects.hash(getNodeInfo(), getChildren());
     }
 
+    public abstract <T> T accept(HulkVisitor<T> visitor);
 }

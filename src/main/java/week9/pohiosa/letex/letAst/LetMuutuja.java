@@ -34,4 +34,9 @@ public class LetMuutuja extends LetAvaldis {
 
         return Objects.hash(nimi);
     }
+
+    @Override
+    public <T> T accept(LetVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

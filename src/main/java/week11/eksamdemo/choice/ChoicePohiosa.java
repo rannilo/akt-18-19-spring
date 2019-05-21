@@ -19,7 +19,7 @@ public class ChoicePohiosa {
     }
 
     public static void main(String[] args) {
-        String sisend = "2 + (3|4) | 5 + (1 | 2+5)";
+        String sisend = "(1|2) + 3 | 5";
         System.out.println(makeChoiceAst(sisend)); // choice(add(choice(1,2),3),5)
     }
 }

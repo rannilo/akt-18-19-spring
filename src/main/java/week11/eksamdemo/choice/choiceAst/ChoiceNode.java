@@ -13,6 +13,17 @@ public abstract class ChoiceNode {
         return new ChoiceDecision(trueChoice, falseChoice);
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ChoiceNode)) return false;
+        return toString().equals(obj.toString());
+    }
+
     // Visitori implementatsiooniks:
     public abstract <T> T accept(ChoiceVisitor<T> visitor);
 

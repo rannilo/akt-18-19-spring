@@ -19,7 +19,7 @@ public class FunlistPohiosa {
 
     // Implementeerida parsepuu -> AST teisendus!
     private static FunlistProg parseTreetoFlistAst(ParseTree tree) {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     public static void main(String[] args) {

@@ -34,7 +34,7 @@ public class BologLoviosaTest {
         checkCodegen(1, nand(var("P"), var("Q")), 0, 0);
         checkCodegen(1, nand(var("P"), var("Q")), 1, 0);
         checkCodegen(1, nand(var("P"), var("Q")), 0, 1);
-        checkCodegen(0, nand(var("P"), var("Q")), 0, 0);
+        checkCodegen(0, nand(var("P"), var("Q")), 1, 1);
     }
 
 
@@ -43,7 +43,7 @@ public class BologLoviosaTest {
         checkCodegen(1, nand(var("P"), var("Q")), 0, 0);
         checkCodegen(1, nand(var("P"), var("Q")), 1, 0);
         checkCodegen(1, nand(var("P"), var("Q")), 0, 1);
-        checkCodegen(0, nand(var("P"), var("Q")), 0, 0);
+        checkCodegen(0, nand(var("P"), var("Q")), 1, 1);
     }
 
     private void checkCodegen(int expected, BologNode ast, Integer... stack) {

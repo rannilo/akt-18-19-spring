@@ -25,7 +25,7 @@ public class BologLoviosaTest {
     public void test01_codegen_basic() {
         checkCodegen(1, tv(true));
         checkCodegen(0, tv(false));
-        checkCodegen(1, var("P"), 0);
+        checkCodegen(0, var("P"), 0);
         checkCodegen(1, var("P"), 1);
     }
 

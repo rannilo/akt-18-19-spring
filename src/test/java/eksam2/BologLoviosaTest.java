@@ -59,6 +59,37 @@ public class BologLoviosaTest {
         checkModel(setOf("X", "Y"), imp(var("X")), imp(var("Y"), var("X")));
     }
 
+    @Test
+    public void test05_checkmodel_more() {
+        checkModel(setOf("X"), imp(var("X"), tv(true)));
+        checkModel(setOf(), imp(var("X"), var("X")));
+        checkModel(setOf("X", "Y", "Z"),
+                imp(var("X"), var("Y")),
+                imp(var("Y")), imp(var("Z"), var("X"), var("Y")),
+                imp(var("Z"), var("P")));
+        checkModel(setOf("Z"),
+                imp(var("X"), var("Y")),
+                imp(var("Y"), var("X")),
+                imp(var("Z"), var("X"), var("Y")),
+                imp(var("Z")));
+    }
+
+    @Test
+    public void test06_sanity() {
+        Set<BologImp> imps = new HashSet<>();
+        for (char i = 'A'; i < 'Y'; i++) {
+            imps.add((BologImp) imp(var(Character.toString(i)), var(Character.toString(i))));
+        }
+        assertEquals(setOf(), BologLoviosa.leastModel(imps));
+
+        Set<String> chars = new HashSet<>();
+        for (char i = 'A'; i < 'Y'; i++) {
+            imps.add((BologImp) imp(var(Character.toString(i))));
+            chars.add(Character.toString(i));
+        }
+        assertEquals(chars, BologLoviosa.leastModel(imps));
+    }
+
     private static void checkModel(Set<String> model, BologNode... imp) {
         Set<BologNode> nodes = new HashSet<>(Arrays.asList(imp));
         Set<BologImp> nodecast = new HashSet<>();

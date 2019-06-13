@@ -18,6 +18,7 @@ import static org.junit.Assert.fail;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BologPohiosaTest {
 
+    @Test
     public void test01_recognize_basic() {
         legal("X");
         legal("JAH");
@@ -119,7 +120,7 @@ public class BologPohiosaTest {
     @Test
     public void test07_ast_all() {
         checkAst("X kui P ja Q\n" +
-                "X && P kui P, P||Q ja P kui Q ja R\n" +
+                "X && P kui P, P||Q ja (P kui Q ja R)\n" +
                 "!X && P kui R && JAH || EI\n",
                 imp(nand(tv(true), nand(var("X"), var("P"))), var("P"), nand(nand(tv(true), var("P")), nand(tv(true), var("Q"))), imp(var("P"), var("Q"), var("R"))),
                 imp(var("X"), var("P"), var("Q")),

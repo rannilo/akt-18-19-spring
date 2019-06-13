@@ -21,10 +21,18 @@ public class BologAlusosaTest {
 
     
     @Test
-    public void test01_conclusionvars() {
+    public void test01_conclusionvars1() {
         checkCVars(setOf("X"), imp(var("X")));
         checkCVars(setOf("X", "Z"), nand(nand(tv(true), imp(var("X"), var("Y"))), nand(tv(true), imp(var("Z"), var("P")))));
     }
+
+    @Test
+    public void test02_conclusionvars2() {
+        checkCVars(setOf(), var("X"));
+        checkCVars(setOf("X", "Y"), imp(nand(var("X"), var("Y"))));
+        checkCVars(setOf("X"), nand(imp(var("X")), var("Y")));
+    }
+
 
     @SafeVarargs
     private static <T> Set<T> setOf(T... elems) {
@@ -37,7 +45,7 @@ public class BologAlusosaTest {
     }
 
     @Test
-    public void test02_eval() {
+    public void test03_eval1() {
         checkEval(true, var("X"), setOf("X"));
         checkEval(false, var("X"), setOf());
 
@@ -50,8 +58,10 @@ public class BologAlusosaTest {
         checkEval(true, nand(var("P"), var("Q")), setOf("P"));
         checkEval(true, nand(var("P"), var("Q")), setOf("Q"));
         checkEval(false, nand(var("P"), var("Q")), setOf("P", "Q"));
+    }
 
-
+    @Test
+    public void test04_eval2() {
         checkEval(true, imp(var("X")), setOf("X"));
         checkEval(false, imp(var("X")), setOf());
         checkEval(true, imp(var("X"), var("Y"), var("Z")), setOf("Y"));
@@ -60,7 +70,7 @@ public class BologAlusosaTest {
 
         checkEval(false, imp(nand(tv(true), nand(var("X"), var("P"))), var("P"),
                 nand(nand(tv(true), var("P")),
-                nand(tv(true), var("Q")))),
+                        nand(tv(true), var("Q")))),
                 setOf("P", "Q"));
     }
 
@@ -70,15 +80,20 @@ public class BologAlusosaTest {
     }
 
     @Test
-    public void test03_toNand() {
-
+    public void test05_toNand1() {
         checkToNand(imp(var("X")));
         checkToNand(imp(var("X"), var("Y"), var("Z")));
         checkToNand(imp(var("X"), var("Y"), var("Z")));
+    }
+
+    @Test
+    public void test06_toNand2() {
         checkToNand(imp(nand(tv(true), nand(var("X"), var("P"))), var("P"),
                 nand(nand(tv(true), var("P")),
                         nand(tv(true), var("Q")))));
     }
+
+
 
 
     // Eval peab olema korrektne!

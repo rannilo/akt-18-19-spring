@@ -9,7 +9,15 @@ init
 // Seda reeglit tuleb muuta / täiendada
 // (Ilmselt soovid ka defineerida uusi abireegleid)
 avaldis
-    : 'implementeeri mind!'
+    : left=avaldis '-' right=avaldis #Lahutamine
+    | 'let' muutujad+=MUUTUJA '=' avaldised+=avaldis (';' muutujad+=MUUTUJA '=' avaldised+=avaldis)* 'in' keha=avaldis #Sidumine
+    | 'sum' (MUUTUJA '=' lo+=avaldis 'to' hi+=avaldis) (';' MUUTUJA '=' lo+=avaldis 'to' hi+=avaldis)* 'in' keha=avaldis #Summeerimine
+    | MUUTUJA #Muutuja
+    | TAISARV #Taisarv
+    | '(' avaldis ')' #Sulud
     ;
+
+MUUTUJA : [a-zA-Z]+;
+TAISARV : [0-9]+;
 
 WS : [ \n\r\t] -> skip;

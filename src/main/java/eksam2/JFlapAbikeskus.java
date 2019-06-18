@@ -3,6 +3,7 @@ package eksam2;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class JFlapAbikeskus {
 
@@ -44,8 +45,13 @@ public class JFlapAbikeskus {
     }
 
     public static void main(String[] args) {
-        System.out.println(yl1(""));     // kas epsilon kuulub yl1 keelde?
+        /*System.out.println(yl2(""));     // kas epsilon kuulub yl1 keelde?
+        System.out.println(yl2("yyz"));     // kas epsilon kuulub yl1 keelde?
+        System.out.println(yl3("xxxy"));     // kas epsilon kuulub yl1 keelde?
         System.out.println(yl4("zxzy")); // zxzy peaks kuuluma yl4 keelde.
+        */
+        Pattern p1 = Pattern.compile("  |");
+        System.out.println(p1.matcher("|").find());
+//
     }
-
 }

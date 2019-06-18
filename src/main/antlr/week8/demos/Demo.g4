@@ -3,13 +3,16 @@ grammar Demo;
 
 init: test1 | test2;
 
-test1: (Kolm|Neli)*;
+test1
+    : (Kolm|Neli)*
+    ;
 test2: (kolm|neli)*;
 
 Kolm: 'a' 'a' 'a';
 Neli: 'a' 'a' 'a' 'a';
 
-kolm: 'b' 'b' 'b';
 neli: 'b' 'b' 'b' 'b';
+kolm: 'b' 'b' 'b';
+
 
 WS: [ \t\r\n]+ -> skip;

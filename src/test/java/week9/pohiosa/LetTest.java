@@ -128,9 +128,9 @@ public class LetTest {
 
     @Test
     public void test07_ast_suludVahe() {
+        checkAstEquality("(a)", var("a"));
         checkAstEquality("1-1", vahe(num(1),num(1)));
         checkAstEquality("82-aG", vahe(num(82),var("aG")));
-        checkAstEquality("(a)", var("a"));
         checkAstEquality("(((((((a)))))))", var("a"));
         checkAstEquality("(1-x)-(c-55)", vahe(vahe(num(1),var("x")),vahe(var("c"),num(55))));
     }

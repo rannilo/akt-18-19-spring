@@ -8,11 +8,14 @@ public class BExpAnalyzer {
 
     // Analüüsida avaldist kasutades Stats klassi meetodid.
     public static Stats analyze(BExp exp) {
+        //Boolean visitor, mis tagastab tõeväärtuse olenevalt kas puus on implikatsioon
+        //Set<Character> visitor, mis tagastab kõikide muutujate nimed
         return null;
     }
 
     // Väärtustada avaldis, kui ette antud on tõeste muutujate hulk.
     public static boolean eval(BExp exp, Set<Character> tv) {
+        //Boolean visitor, kui on lehes siis tagastab true kui char kuulub tv hulka, ülejäänu töötab nagu ikka
         return false;
     }
 

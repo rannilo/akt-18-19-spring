@@ -79,6 +79,146 @@ public class Lexer {
      * See on nüüd see oluline meetod, mida peab ise implementeerima!
      */
     public Token readNextToken() {
-        return new Token(EOF, pos, 0);
+        skipWhitespace();
+        while(peek() == '/'){
+            consume();
+            if (peek() == '*' || peek() == '/'){
+                skipComments();
+                skipWhitespace();
+            }
+            else{
+                return new Token(DIV, pos-1, 1);
+            }
+        }
+        Token returnToken = new Token(EOF, pos, 0);
+        if (current == '(') {
+            returnToken = new Token(LPAREN, pos, 1);
+        } else if (current == ')') {
+            returnToken = new Token(RPAREN, pos, 1);
+        } else if (current == '+') {
+            returnToken = new Token(PLUS, pos, 1);
+        } else if (current == '-') {
+            returnToken = new Token(MINUS, pos, 1);
+        } else if (current == '*') {
+            returnToken = new Token(TIMES, pos, 5);
+        }  else if (current == '"') {
+            return readString();
+        } else if (Character.isDigit(current)) {
+            return readDigit();
+        } else if (Character.isLetter(current)) {
+            return readVarOrKeyword();
+        } else if (current == TERMINATOR) {
+            return new Token(EOF, pos, 0);
+        }
+        consume();
+        return returnToken;
+    }
+
+    private void skipComments() {
+        switch (peek()) {
+            case '*':
+                while (true) {
+                    consume();
+                    if (peek() == '*') {
+                        consume();
+                        if (peek() == '/') {
+                            consume();
+                            return;
+                        }
+                    }
+                }
+            case '/':
+                while (true) {
+                    consume();
+                    if (peek() == TERMINATOR) return;
+                    if (peek() == '\n') {
+                        consume();
+                        return;
+                    }
+                }
+        }
+    }
+
+    private Token readString() {
+        final int START_POS = pos;
+        consume(); //consume'n algava jutumärgi
+        StringBuilder sb = new StringBuilder();
+        while (true) {
+            switch (peek()) {
+                case '\\':
+                    consume();
+                    switch (peek()){
+                        case 'n':
+                            sb.append('\n');
+                            break;
+                        case '\"':
+                            sb.append('\"');
+                            break;
+                        case 't':
+                            sb.append('\t');
+                        case '\\':
+                            sb.append('\\');
+                    }
+                    consume();
+                    break;
+                case '"':
+                    consume();
+                    return new Token(STRING, sb.toString(), START_POS, pos-START_POS);
+                default:
+                    sb.append(peek());
+                    consume();
+            }
+        }
+    }
+
+    private void skipWhitespace() {
+        while (Character.toString(peek()).matches("\\s")) consume();
+    }
+
+    private Token readVarOrKeyword() {
+        final int START_POS = pos;
+        StringBuilder sb = new StringBuilder();
+        while (Character.isLetter(peek())) {
+            sb.append(peek());
+            consume();
+        }
+        if (peek() == '_') {
+            sb.append(peek());
+            consume();
+            while (Character.isDigit(peek())) {
+                sb.append(peek());
+                consume();
+            }
+            return new Token(VARIABLE, sb.toString(), START_POS, pos-START_POS);
+        }
+        switch (sb.toString()) {
+            case "while":
+                return new Token(WHILE, START_POS, 5);
+            case "if":
+                return new Token(IF, START_POS, 2);
+            case "var":
+                return new Token(VAR, START_POS, 2);
+            default:
+                return new Token(VARIABLE, sb.toString(), START_POS, pos-START_POS);
+        }
+    }
+
+    private Token readDigit() {
+        final int START_POS = pos;
+        StringBuilder sb = new StringBuilder();
+        while (Character.isDigit(peek())) {
+            sb.append(peek());
+            consume();
+        }
+        if (peek() == '.') {
+            sb.append(peek());
+            consume();
+            while (Character.isDigit(peek())) {
+                sb.append(peek());
+                consume();
+            }
+            return new Token(DOUBLE, Double.parseDouble(sb.toString()), START_POS, pos-START_POS);
+        }
+        return new Token(INTEGER, Integer.parseInt(sb.toString()), START_POS, pos-START_POS);
     }
 }

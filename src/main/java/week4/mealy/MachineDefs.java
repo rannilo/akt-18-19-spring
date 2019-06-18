@@ -1,8 +1,6 @@
 package week4.mealy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -20,19 +18,19 @@ public class MachineDefs {
      */
     public static MealyMachine getHtmlMachine() {
         List<TableEntry> table = Arrays.asList(
-                // Viga tuleks ära parandada:
-                new TableEntry(0, '<', 1, "x"),
+                new TableEntry(0, '<', 1, ""),
                 new TableEntry(0, '_', 0, "_"),
 
                 new TableEntry(1, '>', 0, ""),
                 new TableEntry(1, '\'', 2, ""),
+                new TableEntry(1, '\"', 3, ""),
                 new TableEntry(1, '_', 1, ""),
 
                 new TableEntry(2, '\'', 1, ""),
-                new TableEntry(2, '_', 2, "")
+                new TableEntry(2, '_', 2, ""),
 
-                // Lisada ka üleminekud tavaliste jutumärkide jaoks.
-                // NB! Üleval on üleminek (1, '_', 1, ""), mis sobitub kõikide tähtedega.
+                new TableEntry(3, '\"', 1, ""),
+                new TableEntry(3, '_', 3, "")
 
         );
         return new MealyMachine(table);
@@ -43,8 +41,15 @@ public class MachineDefs {
      * Masin, mis asendab iga teine 'x' tähega 'o', näiteks 'xxxx' → 'xoxo'.
      */
     public static MealyMachine getXoxoMachine() {
-        // Ei tohiks olla liiga keeruline masin...
-        throw new UnsupportedOperationException();
+        List<TableEntry> table = Arrays.asList(
+                new TableEntry(0, 'x', 1, "x"),
+                new TableEntry(0, '_', 0, "_"),
+                new TableEntry(1, 'x', 2, "o"),
+                new TableEntry(1, '_', 1, "_"),
+                new TableEntry(2, 'x', 1, "_"),
+                new TableEntry(2, '_', 2, "_")
+        );
+        return new MealyMachine(table);
     }
 
     /**
@@ -55,7 +60,13 @@ public class MachineDefs {
     public static MealyMachine getTokenizer(char delim) {
         // Samuti kahe seisundiga masin: https://courses.cs.ut.ee/2017/AKT/spring/Main/PlusMiinus
         // Sealset viimast seisundit ei ole vaja ja väljundid on siin muidugi lihtsamad.
-        throw new UnsupportedOperationException();
+        List<TableEntry> table = Arrays.asList(
+                new TableEntry(0, '+', 1, delim+"+"),
+                new TableEntry(0, '_', 0, "_"),
+                new TableEntry(1, '+', 1, delim+"+"),
+                new TableEntry(1, '_', 0, delim+"_")
+        );
+        return new MealyMachine(table);
     }
 
     /**
@@ -66,8 +77,10 @@ public class MachineDefs {
     public static MealyMachine getDepthMachine() {
         List<TableEntry> table = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            // Lisada iga seisundi jaoks üleminekud siia.
-            throw new UnsupportedOperationException();
+            table.add(new TableEntry(i, '(', i+1, ""));
+            table.add(new TableEntry(i, ')', i-1, ""));
+            table.add(new TableEntry(i, '$', i, Integer.toString(i)));
+            table.add(new TableEntry(i, '_', i, ""));
         }
         return new MealyMachine(table);
     }
@@ -78,13 +91,34 @@ public class MachineDefs {
      * eeldades muidugi, et automaat on kõigepealt optimeeritud.
      */
     public static MealyMachine getFormatter() {
-        // Lõpuks saab kodutöö korralikult lahendatud.
-        throw new UnsupportedOperationException();
+        List<TableEntry> table = new ArrayList<>();
+        Set<Character> punc = new HashSet<>(Arrays.asList(',', '.', ':', ';', '!', '?', ')'));
+        table.add(new TableEntry(0, '(', 0, "("));
+        table.add(new TableEntry(1, '(', 0, " ("));
+        table.add(new TableEntry(2, '(', 0, " ("));
+
+        for(Character c: punc){
+            table.add(new TableEntry(0, c, 1, "_"));
+            table.add(new TableEntry(2, c, 1, "_"));
+            table.add(new TableEntry(1, c, 1, "_"));
+        }
+        table.add(new TableEntry(0, '\n', 0, "\n"));
+        table.add(new TableEntry(1, '\n', 0, "\n"));
+        table.add(new TableEntry(2, '\n', 0, "\n"));
+
+        table.add(new TableEntry(2, ' ', 1, ""));
+        table.add(new TableEntry(1, ' ', 1, ""));
+        table.add(new TableEntry(0, ' ', 0, ""));
+
+        table.add(new TableEntry(1, '_', 2, " _"));
+        table.add(new TableEntry(2, '_', 2, "_"));
+        table.add(new TableEntry(0, '_', 2, "_"));
+        return new MealyMachine(table);
     }
 
 
     private static void addPuncts(List<TableEntry> table, int pre) {
-        List<Character> puncts = Arrays.asList(',',';',':', '!','?','.', ')');
+        List<Character> puncts = Arrays.asList(',', ';', ':', '!', '?', '.', ')');
         for (char c : puncts) table.add(new TableEntry(pre, c, 1, "_"));
         table.add(new TableEntry(pre, '\n', 0, "\n"));
     }

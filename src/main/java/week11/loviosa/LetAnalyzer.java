@@ -19,11 +19,64 @@ public class LetAnalyzer {
 
 
     public static boolean onVaja(String vajaMuutuja, LetAvaldis avaldis) {
-        throw new UnsupportedOperationException();
+        return new LetVisitor<Boolean>() {
+            @Override
+            protected Boolean visit(LetArv arv) {
+                return false;
+            }
+
+            @Override
+            protected Boolean visit(LetMuutuja muutuja) {
+                return muutuja.getNimi().equals(vajaMuutuja);
+            }
+
+            @Override
+            protected Boolean visit(LetSidumine sidumine) {
+                return visit(sidumine.getMuutujaSisu())
+                        || !sidumine.getMuutujaNimi().equals(vajaMuutuja) && visit(sidumine.getKeha());
+            }
+
+            @Override
+            protected Boolean visit(LetSumma summa) {
+                return visit(summa.getLo()) || visit(summa.getHi()) ||
+                        !summa.getMuutujaNimi().equals(vajaMuutuja) && visit(summa.getKeha());
+            }
+
+            @Override
+            protected Boolean visit(LetVahe vahe) {
+                return visit(vahe.getParem()) || visit(vahe.getVasak());
+            }
+        }.visit(avaldis);
     }
 
     public static LetAvaldis optimeeri(LetAvaldis avaldis) {
-        throw new UnsupportedOperationException();
+        return new LetVisitor<LetAvaldis>() {
+            @Override
+            protected LetAvaldis visit(LetArv arv) {
+                return arv;
+            }
+
+            @Override
+            protected LetAvaldis visit(LetMuutuja muutuja) {
+                return muutuja;
+            }
+
+            @Override
+            protected LetAvaldis visit(LetSidumine sidumine) {
+                String nimi = sidumine.getMuutujaNimi();
+                return null;
+            }
+
+            @Override
+            protected LetAvaldis visit(LetSumma summa) {
+                return summa;
+            }
+
+            @Override
+            protected LetAvaldis visit(LetVahe vahe) {
+                return vahe;
+            }
+        }.visit(avaldis);
     }
 
     // Vana hea eval meetod... tuleb avaldist väärtustada!
@@ -44,7 +97,7 @@ public class LetAnalyzer {
 
 
     public static void main(String[] args) {
-        LetAvaldis avaldis = let("a",num(666),let("b",vahe(var("a"),num(1)),num(3)));
+        LetAvaldis avaldis = let("a", num(666), let("b", vahe(var("a"), num(1)), num(3)));
         System.out.println(avaldis);
         System.out.println(optimeeri(avaldis));
         System.out.println(eval(avaldis));

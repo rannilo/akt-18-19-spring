@@ -2,10 +2,16 @@ package week9.pohiosa.letex;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import week9.pohiosa.LetexBaseVisitor;
 import week9.pohiosa.LetexLexer;
 import week9.pohiosa.LetexParser;
 import week9.pohiosa.letex.letAst.*;
+import week9.pohiosa.LetexParser.*;
+
+import java.util.List;
 
 import static week9.pohiosa.letex.letAst.LetAvaldis.*;
 
@@ -39,7 +45,48 @@ public class LetAst {
      * @return LetAvaldis - abstraktne süntakspuu
      */
     private static LetAvaldis fabritseeriAvaldisAst(ParseTree puu) {
-        throw new UnsupportedOperationException();
+        LetexBaseVisitor<LetAvaldis> visitor = new LetexBaseVisitor<>(){
+            @Override
+            public LetAvaldis visitMuutuja(MuutujaContext context){
+                return LetAvaldis.var(context.getText());
+            }
+            @Override
+            public LetAvaldis visitTaisarv(TaisarvContext context){
+                return LetAvaldis.num(Integer.parseInt(context.getText()));
+            }
+            @Override
+            public LetAvaldis visitLahutamine(LahutamineContext context){
+                return LetAvaldis.vahe(visit(context.avaldis(0)), visit(context.avaldis(1)));
+            }
+            @Override
+            public LetAvaldis visitInit(InitContext context){
+                return visit(context.getChild(0));
+            }
+            @Override
+            public LetAvaldis visitSulud(SuludContext context){
+                return visit(context.avaldis());
+            }
+            @Override
+            public LetAvaldis visitSidumine(SidumineContext context){
+                List<Token> muutujad = context.muutujad;
+                AvaldisContext keha = context.keha;
+                List<AvaldisContext> avaldised = context.avaldised;
+                LetAvaldis avaldis = LetAvaldis.let(muutujad.get(muutujad.size()-1).getText(), visit(avaldised.get(avaldised.size()-1)), visit(keha));
+                for(int i = avaldised.size()-2; i>=0; i--){
+                    avaldis = LetAvaldis.let(muutujad.get(i).getText(), visit(avaldised.get(i)), avaldis);
+                }
+                return avaldis;
+            }
+            @Override
+            public LetAvaldis visitSummeerimine(SummeerimineContext context){
+                LetAvaldis avaldis = visit(context.keha);
+                for(int i = context.MUUTUJA().size()-1; i>=0; i--){
+                    avaldis = LetAvaldis.sum(context.MUUTUJA(i).getText(), visit(context.lo.get(i)), visit(context.hi.get(i)), avaldis);
+                }
+                return avaldis;
+            }
+        };
+        return visitor.visit(puu);
     }
 
 }

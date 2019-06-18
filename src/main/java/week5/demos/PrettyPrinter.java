@@ -45,7 +45,6 @@ public class PrettyPrinter {
         return prettyExprVisitor.visit(expr);
     }
 
-
     private static int priorityOf(ExprNode expr) {
         if (expr instanceof Add) return 1;
         if (expr instanceof Div) return 2;

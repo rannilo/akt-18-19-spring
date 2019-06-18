@@ -1,24 +1,37 @@
 package week10;
 
+import java.util.*;
+
 public class IntegerEnvironment {
 
+    Stack<Map<String, Object>> data;
+
+    IntegerEnvironment(){
+        data = new Stack<>();
+        data.add(new HashMap<>());
+    }
+
     public void declare(String variable) {
-        throw new UnsupportedOperationException();
+        data.peek().put(variable, null);
     }
 
     public void assign(String variable, Integer value) {
-        throw new UnsupportedOperationException();
+        data.peek().put(variable, value);
     }
 
     public Integer get(String variable) {
-        throw new UnsupportedOperationException();
+        for (int i = data.size()-1; i>= 0; i--){
+            Integer value = (Integer)data.get(i).getOrDefault(variable, null);
+            if(value != null) return value;
+        }
+        return null;
     }
 
     public void enterBlock() {
-        throw new UnsupportedOperationException();
+        data.push(new HashMap<>());
     }
 
     public void exitBlock() {
-        throw new UnsupportedOperationException();
+        data.pop();
     }
 }

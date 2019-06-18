@@ -89,6 +89,8 @@ public class UjukomaTest {
     public void test06_ast_atoms() {
         checkAstEquality("1", lit(1));
         checkAstEquality("x", var('x'));
+        checkAstEquality("a", var('a'));
+        checkAstEquality("2.5", lit(2.5));
     }
 
     @Test

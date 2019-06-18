@@ -20,4 +20,8 @@ public class BologAlusosa {
         throw new UnsupportedOperationException();
     }
 
+    public static void main(String[] args) {
+        System.out.println(Boolean.toString(true));
+    }
+
 }

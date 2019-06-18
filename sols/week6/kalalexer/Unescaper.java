@@ -21,7 +21,7 @@ public class Unescaper {
                 }
                 else if (c == '\\') escape = true;
                 else output.append(c);
-            }
+            }s
         return output.toString();
     }
 

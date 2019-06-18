@@ -218,16 +218,16 @@ public class FiniteAutomatonTest {
                 tr(2, null, 1)
         );
 		
-		checkAutomaton(fa, "", true);
 		checkAutomaton(fa, "aabb", true);
-		checkAutomaton(fa, "dd", true);
-		checkAutomaton(fa, "bad", true);
-		checkAutomaton(fa, "dad", true);
-		checkAutomaton(fa, "acdc", true);
-		checkAutomaton(fa, "abc", true);
-		checkAutomaton(fa, "abcc", false);
-		checkAutomaton(fa, "abca", false);
-	}
+        checkAutomaton(fa, "dd", true);
+        checkAutomaton(fa, "bad", true);
+        checkAutomaton(fa, "dad", true);
+        checkAutomaton(fa, "acdc", true);
+        checkAutomaton(fa, "abc", true);
+        checkAutomaton(fa, "abcc", false);
+        checkAutomaton(fa, "abca", false);
+        checkAutomaton(fa, "", true);
+    }
 
     @Test
     public void nfaKoosEpsiloniga2() {

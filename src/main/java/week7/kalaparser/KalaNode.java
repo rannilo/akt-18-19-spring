@@ -25,7 +25,6 @@ public abstract class KalaNode {
         return mkList(Arrays.asList(args));
     }
 
-
     // Siit edasi on siis lahendus ette antud, et selle peale mitte jälle liiga palju aega kulutada.
     // Nende peidetud "sisemiste" klasside asemel võid kodutöös teha täiesti eraldi avalikud klassid!
 
@@ -44,10 +43,11 @@ public abstract class KalaNode {
 
         @Override
         public int sum(Map<String, Integer> env) {
-            throw new UnsupportedOperationException();
+            return env.get(name);
         }
     }
 
+    //Kodutöös teed Node'i alamklasse eraldi, avalikud
     private static class KalaList extends KalaNode {
 
         private final List<KalaNode> args;

@@ -113,4 +113,9 @@ public abstract class AbstractAutomaton {
         if (ext.equals("dot")) Files.write(Paths.get(fileName), dotString.getBytes(), StandardOpenOption.CREATE);
         else Graphviz.fromString(dotString).render(Format.PNG).toFile(new File(fileName).getCanonicalFile());
     }
+
+    @Override
+    public String toString(){
+        return toDot();
+    }
 }

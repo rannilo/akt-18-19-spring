@@ -19,7 +19,7 @@ public class Neg extends ExprNode {
 
     @Override
     public int eval() {
-        return 0;
+        return expr.eval();
     }
 
 

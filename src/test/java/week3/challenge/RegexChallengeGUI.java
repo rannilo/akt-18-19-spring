@@ -13,7 +13,6 @@ public class RegexChallengeGUI implements ItemListener {
     private JPanel cards; //a panel that uses CardLayout
     private static JTextField initialField; // needed to request focus for first window
 
-
     private static class TextNote extends JTextArea {
         private TextNote(String text) {
             super(text);

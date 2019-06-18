@@ -28,6 +28,15 @@ public class LexerTests {
 
     @Test
     public void test01_int() {
+        checkBasic("*",
+                new Token(TIMES),
+                new Token(EOF));
+        checkBasic("*+-*",
+                new Token(TIMES),
+                new Token(PLUS),
+                new Token(MINUS),
+                new Token(TIMES),
+                new Token(EOF));
         checkBasic("7 ",
                 new Token(INTEGER, 7),
                 new Token(EOF));
@@ -137,7 +146,7 @@ public class LexerTests {
 
     @Test
     public void test05_varsNumsKeywords() {
-        checkBasic("if while varu_2",
+        checkBasic("     if while   varu_2   ",
                 new Token(IF),
                 new Token(WHILE),
                 new Token(VARIABLE, "varu_2"),
@@ -177,21 +186,20 @@ public class LexerTests {
     @Test
     public void test07_Comments() {
 
+        checkBasic("x /*4 5 6*/ 3",
+                new Token(VARIABLE, "x"),
+                new Token(INTEGER, 3),
+                new Token(EOF));
         checkBasic("x 3 //\"plahh\"",
                 new Token(VARIABLE, "x"),
                 new Token(INTEGER, 3),
                 new Token(EOF));
-
         checkBasic("x 3 //\"plahh\"\ntere",
                 new Token(VARIABLE, "x"),
                 new Token(INTEGER, 3),
                 new Token(VARIABLE, "tere"),
                 new Token(EOF));
 
-        checkBasic("x /*4 5 6*/ 3",
-                new Token(VARIABLE, "x"),
-                new Token(INTEGER, 3),
-                new Token(EOF));
 
         checkBasic("x /*4 /* * /5 6*/ 3",
                 new Token(VARIABLE, "x"),
@@ -209,15 +217,9 @@ public class LexerTests {
 
     @Test
     public void test08_escapedSymbols() {
-        checkBasic("\"plrah\\nh\"",
-                new Token(STRING, "plrah\nh"),
-                new Token(EOF));
-
         checkBasic("\"plrah\\\"h\"",
                 new Token(STRING, "plrah\"h"),
                 new Token(EOF));
-
-
         checkBasic(" 3.14-a +\"ka\\nla\"",
                 new Token(DOUBLE, 3.14),
                 new Token(MINUS),
@@ -226,6 +228,12 @@ public class LexerTests {
                 new Token(STRING, "ka\nla"),
                 new Token(EOF)
         );
+        checkBasic("\"plrah\\nh\"",
+                new Token(STRING, "plrah\nh"),
+                new Token(EOF));
+
+
+
 
     }
 

@@ -20,14 +20,15 @@ public class GrepTests {
 
     @Test
     public void test1_concat() throws Exception {
+        checkRegex("ab");
         checkRegex("abcde");
-        checkRegex("abe");
     }
 
     @Test
     public void test2_alt() throws Exception {
         checkRegex("a|bc");
         checkRegex("a|bc|d");
+        checkRegex("a|bc|d|abcde|avd");
     }
 
     @Test
@@ -79,7 +80,7 @@ public class GrepTests {
         a0.setStartState(a0s1);
         checkDeterminization(a0);
 
-        FiniteAutomaton a1 = new FiniteAutomaton();
+        /*FiniteAutomaton a1 = new FiniteAutomaton();
         int a1s1 = a1.addState(false);
         int a1s2 = a1.addState(true);
         a1.addTransition(a1s1, 'a', a1s2);
@@ -104,7 +105,7 @@ public class GrepTests {
         a3.addTransition(a3s2, null, a3s1);
         a3.addTransition(a3s1, 'a', a3s3);
         a3.addTransition(a3s2, 'b', a3s3);
-        checkDeterminization(a3);
+        checkDeterminization(a3);*/
     }
 
     @Test

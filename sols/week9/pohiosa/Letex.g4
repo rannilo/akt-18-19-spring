@@ -13,7 +13,7 @@ avaldis
     | Muutuja                                                                      # MuutujaNimi
     | '(' avaldis ')'                                                              # SuluAvaldis
     | avaldis '-' avaldis                                                          # Lahutamine
-    | 'let' Muutuja '=' avaldis ( ';' Muutuja '=' avaldis )* 'in' body=avaldis     # MuutujaSidumine
+    | 'let' muutujad+=Muutuja '=' avaldis ( ';' muutujad+=Muutuja '=' avaldis )* 'in' body=avaldis     # MuutujaSidumine
     | 'sum' Muutuja '=' lo+=avaldis 'to' hi+=avaldis
       ( ';' Muutuja '=' lo+=avaldis 'to' hi+=avaldis )* 'in' body=avaldis          # Summeerimine
     ;

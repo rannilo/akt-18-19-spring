@@ -24,7 +24,7 @@ public class Div extends ExprNode {
 
     @Override
     public int eval() {
-        return 0;
+        return e1.eval() / e2.eval();
     }
 
 }

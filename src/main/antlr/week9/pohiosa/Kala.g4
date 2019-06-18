@@ -3,5 +3,22 @@ grammar Kala;
 
 // Ära seda reeglit ümber nimeta, selle kaudu testitakse grammatikat
 init
-    : 'implementeeri mind!'
+    : list EOF
     ;
+
+list : '(' elements? ')';
+
+elements : element (',' element)*;
+
+
+element
+    : Muutuja   # Muutuja
+    | Null      # Null
+    | list      # ListElement
+    ;
+
+Null : 'null';
+
+Muutuja : [a-z]+;
+
+WS : [ \t] -> skip;

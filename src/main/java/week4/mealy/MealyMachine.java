@@ -26,9 +26,14 @@ public class MealyMachine {
         StringBuilder sb = new StringBuilder();
         int state = 0;
         for (char c : input.toCharArray()) {
-            TableEntry entry = findEntry(state, c);
-            state = entry.getPostState();
-            sb.append(entry.getOutput(c));
+            try {
+                TableEntry entry = findEntry(state, c);
+                state = entry.getPostState();
+                sb.append(entry.getOutput(c));
+            }catch (NoSuchElementException ex){
+                System.out.println("state=" + state + "; c=" + c) ;
+                throw ex;
+            }
         }
         return sb.toString();
     }

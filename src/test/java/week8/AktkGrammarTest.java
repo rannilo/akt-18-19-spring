@@ -54,7 +54,7 @@ public class AktkGrammarTest {
         legal("3+kol_pol + 4-(32-12)");
         legal("12/0/0/0");
         legal("a > b");
-        legal("3+3/4 > x + 44-x");
+        legal("('*'|'/'|'%')");
         legal("a > (b > c)");
         legal("(a >= b) <= c");
         legal("(x != y) == true");

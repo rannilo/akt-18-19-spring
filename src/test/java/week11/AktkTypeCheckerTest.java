@@ -24,10 +24,10 @@ public class AktkTypeCheckerTest {
 	
 	@Test
 	public void test01_expressions() {
+		illegal("\"tere\" / \"kere\"");
 		legal("3");
 		legal("\"tere\"");
 		legal("1 + 2");
-		illegal("\"tere\" / \"kere\"");
 		illegal("\"tere\" == 5");
 	}
 	
@@ -48,12 +48,12 @@ public class AktkTypeCheckerTest {
 	
 	@Test
 	public void test04_typeInference() {
+		illegal("var y");
 		legal("var x : Integer");
 		legal("var x:Integer = 12");
 		legal("var x = 3");
 		legal("var x = 3; x = 7");
 		illegal("var x:Integer = \"tere\"");
-		illegal("var y");
 	}
 
 	@Test
@@ -89,10 +89,10 @@ public class AktkTypeCheckerTest {
 
 	@Test
 	public void test09_nestedFunctionCalls() {
+		illegal("print(gcd(1, \"a\"))");
 		legal("print(lower(\"AKTK\"))");
 		legal("print(upper(input()))");
 		legal("print(gcd(1, stringToInteger(\"3\")))");
-		illegal("print(gcd(1, \"a\"))");
 		illegal("print(power(2, integerToString(3)))");
 		illegal("print(print(1))");
 	}

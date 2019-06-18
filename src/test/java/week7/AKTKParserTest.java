@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import week6.TokenType;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,7 +81,10 @@ public class AKTKParserTest {
 
     @Test
     public void test07_parseAll() throws Exception {
-        checkEval("5+(kala-4)*x+8-(5/68)", -7);
+        //checkEval("5+(kala-4)*x+8-(5/68)", -7);
+        checkEval("5+(3*2)-2", 9);
+        checkEval("5+3*2", 11);
+        checkEval("5+3*2-2+1*1", 10);
     }
 
 
@@ -104,6 +108,11 @@ public class AKTKParserTest {
         checkException("105+5-+5", 6, s1, s2);
         checkException("15 5", 3, s2, s1);
         checkException("((5 5", 4, s3, s1);
+        checkException("(5))", 3, Arrays.asList(EOF), Arrays.asList(INTEGER, LPAREN, RPAREN));
+        checkException("1*/4", 2, s1, s2);
+        checkException("()", 1, s1, s3);
+        checkException("kass)", 4, s2, Arrays.asList(RPAREN, LPAREN, INTEGER, VARIABLE));
+        checkException("kass(", 4, s2, s1);
     }
 
     @Test

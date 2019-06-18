@@ -39,11 +39,14 @@ public class AktkCompilerTest {
 
 	@Test
 	public void test01_expressions() {
+		//testProgram("print(1+1)", "test01", "", "2");
 		testProgram("1", "test01", "", "");
+		testProgram("print(-1)", "test01", "", "-1");
 	}
 
 	@Test
 	public void test02_variables() {
+		testProgram("var x = 1; print(x)", "test02_1", "", "1");
 		testProgram("var x = 1", "test02", "", "");
 	}
 
@@ -71,6 +74,11 @@ public class AktkCompilerTest {
 
 	@Test
 	public void test06_whileStatements() {
+		testProgram("while 0 do {\n"
+				+ "   print(n*n);"
+				+ "   n = 0"
+				+ "}\n" +
+				"print(1)", "test06_1", "", "1");
 		testProgram("var n = readInt();\n"
 				+ "while n > 0 do {\n"
 				+ "   print(n*n);"
@@ -80,6 +88,10 @@ public class AktkCompilerTest {
 
 	@Test
 	public void test07_ifStatements() {
+		testProgram("if 4 - 2 == 2 then {\n"
+				+ "   print(100)\n"
+				+ "} else print(1) \n", "test07_1", "", "100");
+
 		Map<String, String> ioPairs = new HashMap<String, String>();
 		ioPairs.put("24\n", "4\n");
 		ioPairs.put("6\n", "2\n");

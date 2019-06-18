@@ -40,6 +40,12 @@ public class AktkInterpreterTest {
 	public void test03_ifStatements() {
 		check("if (1 == 1) then print(1) else print(2)", "1\n");
 		check("if (1 != 1) then print(1) else print(2)", "2\n");
+		check("if ((13+4) != 1) then print(1) else print(2)", "1\n");
+		check("if (2 > 1) then print(1) else print(2)", "1\n");
+		check("if (2 >= 2) then print(1) else print(2)", "1\n");
+		check("if (3 < 1) then print(1) else print(2)", "2\n");
+		check("if (3 <= 3) then print(3) else print(2)", "3\n");
+		check("if (3 < 3) then print(3) else print(2)", "2\n");
 	}
 
 	@Test
@@ -68,9 +74,9 @@ public class AktkInterpreterTest {
 
 	@Test
 	public void test08_aktkFunctions() {
-		check("fun snd(x:Integer, y:Integer) -> Integer {return y}", "");
 		check("fun snd(x:Integer, y:Integer) -> Integer {return y}; snd(3,42)", "");
 		check("fun snd(x:Integer, y:Integer) -> Integer {return y}; print(snd(3,42))", "42\n");
+		check("fun snd(x:Integer, y:Integer) -> Integer {return y}", "");
 		check("fun snd(x:Integer, z:Integer) -> Integer {return z}; print(snd(3,42))", "42\n");
 	}
 
@@ -81,15 +87,28 @@ public class AktkInterpreterTest {
 		check("var y = 1; fun snd(x:Integer, z:Integer) -> Integer {return y}; print(snd(3,42))", "1\n");
 		check("var y = 1; if (1 > 2) then {var y = 2; print(y)} else {print(y)}", "1\n");
 		check("var y = 1; if (1 < 2) then {var y = 2; print(y)} else {print(y)}", "2\n");
-		check("var y = 1; if (1 < 2) then {y = 2; print(y)} else {print(y)}; print(y)", "2\n2\n");
+		check("var y = 1; " +
+				"if (1 < 2) " +
+				"then {y = 2; print(y)} " +
+				"else {print(y)}; " +
+				"print(y)", "2\n2\n");
 		check("var y = 1; if (1 < 2) then {var y = 2} else 0; print(y)", "1\n");
 	}
 
 	@Test
 	public void test10_recursion() {
-		check("fun fact(x:Integer) -> Integer { if (x<=1) then return x else return x * fact(x-1) }; print(fact(6))", "720\n");
+		check("fun sum(x:Integer) -> Integer " +
+				"{if x > 0 " +
+				"then return (sum(x-1)+x) " +
+				"else return 0}; " +
+				"print(sum(3))", "6\n");
 		check("fun fact(x:Integer, res:Integer) -> Integer { if (x<=1) then return res else return fact(x-1, res*x) }; print(fact(7,1))", "5040\n");
-		check("fun sum(x:Integer) -> Integer {if x > 0 then return (sum(x-1)+x) else return 0}; print(sum(3))", "6\n");
+		check("fun fact(x:Integer, res:Integer) -> Integer { if (x<=1) then return res else return fact(x-1, res*x) }; fact(2,10)", "");
+		check("fun fact(x:Integer) -> Integer " +
+				"{ if (x<=1) " +
+				"then return x " +
+				"else return x * fact(x-1) }; " +
+				"print(fact(6))", "720\n");
 	}
 
 

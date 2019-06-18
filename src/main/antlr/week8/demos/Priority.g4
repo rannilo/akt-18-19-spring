@@ -3,7 +3,7 @@ grammar Priority;
 
 doubleRule : Tere;
 
-Kurjus : [a-z]+;
 Tere : 'tere';
+Kurjus : [a-z]+;
 
 WS: [ \t\r\n]+ -> skip;

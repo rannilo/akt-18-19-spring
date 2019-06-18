@@ -18,7 +18,7 @@ public class Num extends ExprNode {
 
     @Override
     public int eval() {
-        return 0;
+        return num;
     }
 
 }

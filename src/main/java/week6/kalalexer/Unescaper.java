@@ -11,7 +11,18 @@ public class Unescaper {
      * Töötleb sisendsõne selliselt, et escape'itud reavahetused on asendatud päris reavahetustega.
      */
     private static String unescape(String str) {
-        throw new UnsupportedOperationException();
+        StringBuilder output = new StringBuilder();
+        boolean escape = false;
+        for (char c : str.toCharArray()) {
+            if (escape) {
+                if (c == 'n') output.append('\n');
+                else throw new IllegalArgumentException("Unknown escape literal");
+                escape = false;
+            }
+            else if (c == '\\') escape = true;
+            else output.append(c);
+        }
+        return output.toString();
     }
 
 

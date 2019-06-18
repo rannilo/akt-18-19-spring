@@ -2,9 +2,7 @@ package week5.basics;
 
 import week5.expr.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ExpressionAnalyzer {
 
@@ -28,14 +26,60 @@ public class ExpressionAnalyzer {
     // Proovime nüüd selle sama asja visitor abil teha.
     public static int evalWithVisitor(ExprNode expr) {
         // Kirjutame siia "null" asemel "new ExprVisitor<Integer>()" ja siis IDE abil genereeri meetodid.
-        ExprVisitor<Integer> visitor = null;
+        ExprVisitor<Integer> visitor = new ExprVisitor<Integer>() {
+            @Override
+            protected Integer visit(Num num) {
+                return num.getValue();
+            }
+
+            @Override
+            protected Integer visit(Neg neg) {
+                return - visit(neg.getExpr());
+            }
+
+            @Override
+            protected Integer visit(Div div) {
+                return visit(div.getNumerator()) / visit(div.getDenominator());
+            }
+
+            @Override
+            protected Integer visit(Add add) {
+                return visit(add.getLeft()) + visit(add.getRight());
+            }
+        };
         return expr.accept(visitor);
     }
 
 
     // Proovi nüüd ise teha natuke lihtsam ülesanne: koguda kõik tipus esinevad arvud.
     public static Set<Integer> getAllValues(ExprNode expr) {
-        ExprVisitor<Set<Integer>> visitor = null;
+        ExprVisitor<Set<Integer>> visitor =  new ExprVisitor<Set<Integer>>() {
+            @Override
+            protected Set<Integer> visit(Num num) {
+                return Collections.singleton(num.getValue());
+            }
+
+            @Override
+            protected Set<Integer> visit(Neg neg) {
+                return visit(neg.getExpr());
+            }
+
+            @Override
+            protected Set<Integer> visit(Div div) {
+                Set<Integer> hulk = new HashSet<>();
+                hulk.addAll(visit(div.getDenominator()));
+                hulk.addAll(visit(div.getNumerator()));
+                return hulk;
+            }
+
+            @Override
+            protected Set<Integer> visit(Add add) {
+                Set<Integer> hulk = new HashSet<>();
+                hulk.addAll(visit(add.getRight()));
+                hulk.addAll(visit(add.getLeft()));
+                return hulk;
+            }
+        };
         return expr.accept(visitor);
     }
 
@@ -44,6 +88,33 @@ public class ExpressionAnalyzer {
     public static Set<Integer> getAllValuesBaseVisitor(ExprNode expr) {
 
         ExprVisitor<Set<Integer>> visitor = new ExprVisitor.BaseVisitor<Set<Integer>>() {
+            @Override
+            protected Set<Integer> visit(Num num) {
+                return Collections.singleton(num.getValue());
+            }
+
+            @Override
+            protected Set<Integer> visit(Neg neg) {
+                return visit(neg.getExpr());
+            }
+
+            @Override
+            protected Set<Integer> visit(Div div) {
+                return aggregateResult(visit(div.getDenominator()), visit(div.getNumerator()));
+            }
+
+            @Override
+            protected Set<Integer> visit(Add add) {
+                return aggregateResult(visit(add.getLeft()), visit(add.getRight()));
+            }
+
+            @Override
+            protected Set<Integer> aggregateResult(Set<Integer> aggregate, Set<Integer> nextResult) {
+                Set<Integer> hulk = new HashSet<>();
+                hulk.addAll(aggregate);
+                hulk.addAll(nextResult);
+                return hulk;
+            }
         };
 
         return expr.accept(visitor);

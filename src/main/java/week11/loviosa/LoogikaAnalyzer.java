@@ -1,14 +1,23 @@
 package week11.loviosa;
 
-import cma.CMaInterpreter;
-import cma.CMaProgram;
-import cma.CMaProgramWriter;
-import cma.CMaStack;
+import cma.*;
+import week9.pohiosa.loogika.loogikaAst.KuiSiisMuidu;
 import week9.pohiosa.loogika.loogikaAst.LoogikaNode;
+import week9.pohiosa.loogika.loogikaAst.LoogikaVisitor;
+import week9.pohiosa.loogika.loogikaAst.aatomid.LoogikaLiteral;
+import week9.pohiosa.loogika.loogikaAst.aatomid.LoogikaMuutuja;
+import week9.pohiosa.loogika.loogikaAst.operaatorid.JaNode;
+import week9.pohiosa.loogika.loogikaAst.operaatorid.VoiNode;
+import week9.pohiosa.loogika.loogikaAst.operaatorid.VordusNode;
 
 import java.io.IOException;
 import java.util.*;
 
+import static cma.instruction.CMaBasicInstruction.Code.*;
+import static cma.instruction.CMaIntInstruction.Code.LOADA;
+import static cma.instruction.CMaIntInstruction.Code.LOADC;
+import static cma.instruction.CMaLabelInstruction.Code.JUMP;
+import static cma.instruction.CMaLabelInstruction.Code.JUMPZ;
 import static week9.pohiosa.loogika.loogikaAst.LoogikaNode.*;
 
 public class LoogikaAnalyzer {
@@ -42,14 +51,114 @@ public class LoogikaAnalyzer {
 
     // See eksami alusosa ülesanne võib soojenduseks implementeerida...
     public static boolean eval(LoogikaNode node, Map<String, Boolean> env) {
-        throw new UnsupportedOperationException();
+        LoogikaVisitor<Boolean> loogikaVisitor = new LoogikaVisitor<Boolean>() {
+            @Override
+            public Boolean visit(LoogikaLiteral literal) {
+                return literal.isValue();
+            }
+
+            @Override
+            public Boolean visit(LoogikaMuutuja muutuja) {
+                return env.get(muutuja.getNimi());
+            }
+
+            @Override
+            public Boolean visit(JaNode ja) {
+                return visit(ja.getLeftChild()) && visit(ja.getRightChild());
+            }
+
+            @Override
+            public Boolean visit(VoiNode voi) {
+                return visit(voi.getLeftChild()) || visit(voi.getRightChild());
+            }
+
+            @Override
+            public Boolean visit(VordusNode vordus) {
+                return visit(vordus.getLeftChild()) == visit(vordus.getRightChild());
+            }
+
+            @Override
+            public Boolean visit(KuiSiisMuidu kuiSiisMuidu) {
+                if(visit(kuiSiisMuidu.getKuiAvaldis())){
+                    return visit(kuiSiisMuidu.getSiisAvaldis());
+                }
+                else if(kuiSiisMuidu.getMuiduAvaldis() != null){
+                    return visit(kuiSiisMuidu.getMuiduAvaldis());
+                }
+                return true;
+            }
+        };
+        return loogikaVisitor.visit(node);
     }
 
 
 
     public static CMaProgram compile(LoogikaNode node) {
         CMaProgramWriter pw = new CMaProgramWriter();
+        LoogikaVisitor<Void> visitor = new LoogikaVisitor<Void>() {
+            @Override
+            public Void visit(LoogikaLiteral literal) {
+                pw.visit(LOADC, literal.isValue() ? 1 : 0);
+                return null;
+            }
 
+            @Override
+            public Void visit(LoogikaMuutuja muutuja) {
+                pw.visit(LOADA, MUUTUJAD.indexOf(muutuja.getNimi()));
+                return null;
+            }
+
+            @Override
+            public Void visit(JaNode ja) {
+                visit(ja.getLeftChild());
+                visit(ja.getRightChild());
+                pw.visit(AND);
+                return null;
+            }
+
+            @Override
+            public Void visit(VoiNode voi) {
+                visit(voi.getLeftChild());
+                visit(voi.getRightChild());
+                pw.visit(OR);
+                return null;
+            }
+
+            @Override
+            public Void visit(VordusNode vordus) {
+                visit(vordus.getLeftChild());
+                visit(vordus.getRightChild());
+                pw.visit(EQ);
+                return null;
+            }
+
+            @Override
+            public Void visit(KuiSiisMuidu kuiSiisMuidu) {
+                CMaLabel _muidu = new CMaLabel();
+                CMaLabel _end = new CMaLabel();
+
+                //if
+                visit(kuiSiisMuidu.getKuiAvaldis());
+                pw.visit(JUMPZ, _muidu);
+
+                //then
+                visit(kuiSiisMuidu.getSiisAvaldis());
+                pw.visit(JUMP, _end);
+
+                //else
+                pw.visit(_muidu);
+                if(kuiSiisMuidu.getMuiduAvaldis() != null) {
+                    visit(kuiSiisMuidu.getMuiduAvaldis());
+                } else{
+                    pw.visit(LOADC, 1);
+                }
+
+                //endif
+                pw.visit(_end);
+                return null;
+            }
+        };
+        visitor.visit(node);
         return pw.toProgram();
     }
 }

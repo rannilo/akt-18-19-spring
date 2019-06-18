@@ -1,6 +1,11 @@
 package week11.eksamdemo.choice;
 
+import week11.eksamdemo.choice.choiceAst.ChoiceAdd;
+import week11.eksamdemo.choice.choiceAst.ChoiceDecision;
 import week11.eksamdemo.choice.choiceAst.ChoiceNode;
+import week11.eksamdemo.choice.choiceAst.ChoiceValue;
+import week11.eksamdemo.choice.choiceAst.ChoiceVisitor;
+
 
 import java.util.Random;
 import java.util.Set;
@@ -21,7 +26,24 @@ public class ChoiceAlusosa {
 
     // Lisada avaldisele täisarv
     public static ChoiceNode addConst(ChoiceNode expr, int n) {
-        throw new UnsupportedOperationException();
+        return new ChoiceVisitor<ChoiceNode>() {
+            @Override
+            protected ChoiceNode visit(ChoiceValue value) {
+                return ChoiceNode.val(value.getValue() + n);
+            }
+
+            @Override
+            protected ChoiceNode visit(ChoiceAdd add) {
+                return ChoiceNode.add(visit(add.getLeft()), visit(add.getRight()));
+            }
+
+            @Override
+            protected ChoiceNode visit(ChoiceDecision decision) {
+                return ChoiceNode.choice(
+                        visit(decision.getTrueChoice()),
+                        visit(decision.getFalseChoice()));
+            }
+        }.visit(expr);
     }
 
 }
